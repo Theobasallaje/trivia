@@ -105,7 +105,8 @@ function displayQuestion(){
                 questionsElement.append(
                     `<div number=${questionNumber + 1} 
                     data-value="${questions[questionNumber].options[j]}"
-                     name=${questions[questionNumber].question}
+                    answer="${questions[questionNumber].answer[j]}"
+                    name=${questions[questionNumber].question}
                     class="options">${questions[questionNumber].options[j]} </div>`);
             }
             questionNumber++;
@@ -121,15 +122,19 @@ function displayQuestion(){
 
 $(document).on('click', '.options', function(){
     var value = $(this).attr('data-value');
+    var answer = $(this).attr('answer')
     var questionNumber = $(this).attr('number');
     // alert(questionNumber + value);
     results[questionNumber] = value;
-    // You want to check if the option is true or false or correct incomrrect
+    // You want to check if the option is true or false or correct incorrect
     // Display that and clear interval
+    console.log(value);
+    console.log(answer);
+    // if(results.options=questions.answer)
     questionsElement.html('<div> This is is correct </div>')
+    clearInterval(timerInterval);
     setTimeout(function(){
-        
-        displayQuestion()
+        displayQuestion();
     }, 3000)
     console.log(results);
     
