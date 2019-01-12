@@ -58,70 +58,74 @@ var results = {
 
 //global variables
 var questionsElement = $("#questions");
-var submit = $("#submit");
+var play = $("#play");
 var timerElement = $("#timer");
-var timer = 10
+var timer = 30
 var timerInterval;
 var questionNumber = 0;
 
 var correct = 0;
 var wrong = 0;
+var unanswered = 0;
+var value;
 
 //functions
 function startGame(){
     correct = 0;
-    wrong=0;
+    wrong = 0;
+    unanswered = 0;
     questionNumber = 0;
-   
-   
     displayQuestion();
+    play.hide();
 }
 
-startGame()
+play.on('click', function(){
+startGame();
+});
 
 
 function displayQuestion(){
     clearInterval(timerInterval)
-        
         if(questionNumber < questions.length){
-            timer=10;
+            timer=30;
             timerInterval = setInterval(function(){ 
                 if(timer > 1){ 
                     timer-- 
-                    timerElement.html("Timer: " + timer);
+                    timerElement.html("Time Remaining: " + timer);
                 } else{ 
                     // alert("time out")
-                  
                     displayQuestion()
                 } 
             }
-            
             , 1000)
-            timerElement.html("Timer: " + timer);
+            timerElement.html("Time Remaining: " + timer);
             questionsElement.empty();
-               
             questionsElement.append(`<div class="card">${questions[questionNumber].question}</div>`);
             for (var j=0; j< questions[questionNumber].options.length; j++){
                 questionsElement.append(
                     `<div number=${questionNumber + 1} 
                     data-value="${questions[questionNumber].options[j]}"
-                    answer="${questions[questionNumber].answer[j]}"
+                    answer="${questions[questionNumber].answer}"
                     name=${questions[questionNumber].question}
-                    class="options">${questions[questionNumber].options[j]} </div>`);
+                    class="options"><div id="optionsDiv">${questions[questionNumber].options[j]}</div></div>`);
             }
             questionNumber++;
+            value = $(this).attr('data-value');
+            results[questionNumber] = value;
+            console.log(results);
+
+        console.log(`${questionNumber}: Correct: ${correct} Incorrect: ${wrong} Unanswered: ${unanswered}`);
+
         }else {
             // alert('game over')
-           
             endGame()
+            //why does show need to be here??
+            play.show(); 
         }
-        
-    
 }
 
-
 $(document).on('click', '.options', function(){
-    var value = $(this).attr('data-value');
+    value = $(this).attr('data-value');
     var answer = $(this).attr('answer')
     var questionNumber = $(this).attr('number');
     // alert(questionNumber + value);
@@ -130,31 +134,63 @@ $(document).on('click', '.options', function(){
     // Display that and clear interval
     console.log(value);
     console.log(answer);
-    // if(results.options=questions.answer)
-    questionsElement.html('<div> This is is correct </div>')
-    clearInterval(timerInterval);
-    setTimeout(function(){
-        displayQuestion();
-    }, 3000)
-    console.log(results);
-    
+    if (value===answer){
+        // console.log(value + " " + answer);
+        correct++;
+        timerElement.html("");
+        questionsElement.html('<div>Correct! :)</div>')
+        clearInterval(timerInterval);
+        setTimeout(function(){
+            displayQuestion();
+        }, 5000)
+        console.log(results);
+    } else {
+        // console.log(value + " " + answer);
+        wrong++;
+        timerElement.html("");
+        questionsElement.html('<div>Incorrect! :(</div>')
+        clearInterval(timerInterval);
+        setTimeout(function(){
+            displayQuestion();
+        }, 5000)
+        console.log(results);
+    } 
 })
 
  function endGame(){
-     console.log("In end game ")
-    for (var i=0; i<questions.length; i++){
-        if (questions[i].answer === results[i+1]){
-            correct++;
-        }
-        else {
-            wrong++;
-        }
-    }
+    console.log("In end game ");
+    // for (var i=0; i<results.length; i++){
+    //     if (value=undefined){
+    //         unanswered++;
+    //         console.log("In if");
+    //     } else {
+    //         console.log("In else");
+    //     }
+    // }
+
+    // console.log(unanswered);
+
+    unanswered = 10 - (correct + wrong);
+    timerElement.html("");
+    // play.show(); -- why doesnt this work here????
+    play.text("Try Again?");
+    // for (var i=0; i<questions.length; i++){
+    //     if (questions[i].answer === results[i+1]){
+    //         correct++;
+    //     }
+    //     else if (questions[i].answer != results[i+1]){
+    //         wrong++;
+    //     }
+    //     else {
+    //         unanswered++;
+    //     }
+    // }
     clearInterval(timerInterval);
-    console.log(correct);
-    console.log(wrong);
-    $('#questions').html(`<div>Correct :  ${correct}</div>
-                        <div>Wrong : ${wrong}</div>`);
+    // console.log(correct);
+    // console.log(wrong);
+    $('#questions').html(`<div id="questionCorrect">Correct:  ${correct}</div>
+                        <div id="questionWorng">Incorrect: ${wrong}</div>
+                        <div>Unanswered: ${unanswered}</div>`);
    
 }
 

@@ -1,11 +1,68 @@
+html, body{
+    height: 100%;
+}
+
+body{
+    background: url("https://stmed.net/sites/default/files/binary-wallpapers-30635-5423541.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2em;
+}
+
+button{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 25px 42px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 26px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+#content{
+    background: green;
+    width: 850px;
+    height: 600px;
+}
+
+#title{
+    text-align: center;
+}
 .card {
     padding:20px;
-    border: 1px solid black;
     margin:10px;
 }
+
+#questions{
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#optionsDiv{
+    width: 600px;
+    /* border: 2px solid green; */
+}
+
 .options {
-    border: 1px solid black;
-    padding: 10px;
-    width: 150px;
+    /* text-align: center; */
+    /* margin-left: 43vw; */
+    /* border: 1px solid black; */
+    /* padding: 10px; */
     cursor: pointer;
+}
+
+/* how i dynamically set the width to the elemets length but with a span no id/class*/
+.options #optionsDiv:hover{
+    border: 2px solid white;
 }
