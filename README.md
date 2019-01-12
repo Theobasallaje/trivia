@@ -1,6 +1,6 @@
 # Welcome to my Trivia "Game"!
 
-#NOTE: Answer is always the first one by design for easy testing
+# NOTE: Answer is always the first one by design for easy testing
 
 # Directions:
 # 1. You have 10 questions to answer
