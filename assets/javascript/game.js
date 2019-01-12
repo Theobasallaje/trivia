@@ -1,19 +1,54 @@
 //arrays
 var questions = [
     {
-        question: "What does the online acronym SMH stand for?",
-        options: ["Shaking my head", "O2", "O3", "O4"],
-        answer: "Shaking my head"
+        question: "Which of the following languages is more suited to a structured program?",
+        options: ["PASCAL", "PL/1", "FORTRAN", "BASIC"],
+        answer: "PASCAL"
     },
     {
-        question: "The name of the popular online battle royale game PUBG, is short for what?",
-        options: ["PlayerUnknowns Battlegrounds", "O2", "O3", "O4"],
-        answer: "PlayerUnknowns Battlegrounds"
+        question: "A computer assisted method for the recording and analyzing of existing or hypothetical systems is",
+        options: ["Data flow", "Data capture", "Data processing", "Data transmission"],
+        answer: "Data flow"
     },
     {
-        question: "When referring to cables used to transmit audio/video, what does HDMI stand for?",
-        options: ["High-Definition Multimedia Interface", "O2", "O3", "O4"],
-        answer: "High-Definition Multimedia Interface"
+        question: "Which of the following computer language is used for artificial intelligence?",
+        options: ["PROLOG", "COBOL", "FORTRAN", "C"],
+        answer: "PROLOG"
+    },
+    {
+        question: "Which of the following is the 1's complement of 10?",
+        options: ["01", "110", "11", "10"],
+        answer: "01"
+    },
+    {
+        question: "The binary system uses powers of",
+        options: ["2", "10", "8", "16"],
+        answer: "2"
+    },
+    {
+        question: "A computer program that converts assembly language to machine language is?",
+        options: ["Assembler", "Compiler", "Interpreter", "Comparator"],
+        answer: "Assembler"
+    },
+    {
+        question: "The time required for the fetching and execution of one simple machine instruction is?",
+        options: ["CPU cycle", "Delay time", "Real time", "Seek time"],
+        answer: "CPU cycle"
+    },
+    {
+        question: "Binary numbers need more places for counting because?",
+        options: ["Binary base is small", "They are always big numbers", "Any no. of 0's can be added in front of them", "They are always big numbers"],
+        answer: "Binary base is small"
+    },
+    {
+        question: "A single packet on a data link is known as?",
+        options: ["Frame", "Path", "Block", "Group"],
+        answer: "Frame"
+    },
+    {
+        question: "The examination and changing of single bits or small groups of his within a word is called?",
+        options: ["Bit manipulation", "Bit", "Byte", "Bit slice"],
+        answer: "Bit manipulation"
     }
 ];
 //objects
@@ -25,8 +60,9 @@ var results = {
 var questionsElement = $("#questions");
 var submit = $("#submit");
 var timerElement = $("#timer");
-var timer = 60
+var timer = 10
 var timerInterval;
+var questionNumber = 0;
 
 var correct = 0;
 var wrong = 0;
@@ -35,33 +71,51 @@ var wrong = 0;
 function startGame(){
     correct = 0;
     wrong=0;
-    timer=60;
-    timerInterval = setInterval(function(){ 
-        if(timer > 1){ 
-            timer-- 
-            timerElement.html("Timer: " + timer);
-        } else{ 
-            alert("time out")
-            clearInterval(timerInterval)
-        } 
-    }
-    
-    , 1000)
-    timerElement.html("Timer: " + timer);
-    questionsElement.empty();
-    displayQuestions();
+    questionNumber = 0;
+   
+   
+    displayQuestion();
 }
 
 startGame()
 
 
-function displayQuestions(){
-    for (var i=0; i<questions.length; i++){
-        questionsElement.append(`<div class="card">${questions[i].question}</div>`);
-        for (var j=0; j< questions[i].options.length; j++){
-            questionsElement.append(`<input number=${i+1} data-value="${questions[i].options[j]}" name=${questions[i].question} type="radio" class="options">${questions[i].options[j]}`);
+function displayQuestion(){
+    clearInterval(timerInterval)
+        
+        if(questionNumber < questions.length){
+            timer=10;
+            timerInterval = setInterval(function(){ 
+                if(timer > 1){ 
+                    timer-- 
+                    timerElement.html("Timer: " + timer);
+                } else{ 
+                    // alert("time out")
+                  
+                    displayQuestion()
+                } 
+            }
+            
+            , 1000)
+            timerElement.html("Timer: " + timer);
+            questionsElement.empty();
+               
+            questionsElement.append(`<div class="card">${questions[questionNumber].question}</div>`);
+            for (var j=0; j< questions[questionNumber].options.length; j++){
+                questionsElement.append(
+                    `<div number=${questionNumber + 1} 
+                    data-value="${questions[questionNumber].options[j]}"
+                     name=${questions[questionNumber].question}
+                    class="options">${questions[questionNumber].options[j]} </div>`);
+            }
+            questionNumber++;
+        }else {
+            // alert('game over')
+           
+            endGame()
         }
-    }
+        
+    
 }
 
 
@@ -70,10 +124,19 @@ $(document).on('click', '.options', function(){
     var questionNumber = $(this).attr('number');
     // alert(questionNumber + value);
     results[questionNumber] = value;
+    // You want to check if the option is true or false or correct incomrrect
+    // Display that and clear interval
+    questionsElement.html('<div> This is is correct </div>')
+    setTimeout(function(){
+        
+        displayQuestion()
+    }, 3000)
     console.log(results);
+    
 })
 
-submit.on('click', function(){
+ function endGame(){
+     console.log("In end game ")
     for (var i=0; i<questions.length; i++){
         if (questions[i].answer === results[i+1]){
             correct++;
@@ -85,9 +148,9 @@ submit.on('click', function(){
     clearInterval(timerInterval);
     console.log(correct);
     console.log(wrong);
-    $('#questions').html(`<div> you had this many correct :  ${correct}</div>
-                        <div> you had this many wrong : ${wrong}</div>`);
-    setTimeout(startGame, 2000)
-})
+    $('#questions').html(`<div>Correct :  ${correct}</div>
+                        <div>Wrong : ${wrong}</div>`);
+   
+}
 
 
