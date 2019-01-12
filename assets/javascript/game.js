@@ -100,6 +100,7 @@ function displayQuestion(){
             , 1000)
             timerElement.html("Time Remaining: " + timer);
             questionsElement.empty();
+            questionsElement.append(`${questionNumber}/10`);
             questionsElement.append(`<div class="card">${questions[questionNumber].question}</div>`);
             for (var j=0; j< questions[questionNumber].options.length; j++){
                 questionsElement.append(
