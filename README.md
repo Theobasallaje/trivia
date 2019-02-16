@@ -10,4 +10,4 @@
 # 5. You will also have the option to play the same set        of questions again with the same rules as above
 
 # Play Now
-# https://github.com/Theobasallaje/trivia
+# https://theobasallaje.github.io/trivia/
