@@ -1,5 +1,8 @@
 # Welcome to my Trivia "Game"!
 
+# Screenshots
+![Homepage](https://theobasallaje.github.io/portfolio/image/portfolio/trivia.jpg)
+
 # NOTE: Answer is always the first one by design for easy testing
 
 # Directions:
